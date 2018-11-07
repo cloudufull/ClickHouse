@@ -228,6 +228,7 @@ private:
     bool do_global; /// Do I need to prepare for execution global subqueries when analyzing the query.
 
     AnalyzedJoin analyzed_join;
+    JoinedColumnsList columns_added_by_join;  /// Subset of analyzed_join.available_joined_columns
 
     /** Remove all unnecessary columns from the list of all available columns of the table (`columns`).
       * At the same time, form a set of unknown columns (`unknown_required_source_columns`),

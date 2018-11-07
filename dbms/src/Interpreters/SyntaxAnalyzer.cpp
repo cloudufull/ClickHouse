@@ -784,7 +784,7 @@ void collectJoinedColumns(AnalyzedJoin & analyzed_join, const ASTSelectQuery * s
             bool make_nullable = settings.join_use_nulls && (table_join.kind == ASTTableJoin::Kind::Left ||
                                                              table_join.kind == ASTTableJoin::Kind::Full);
             auto type = make_nullable ? makeNullable(column_type) : column_type;
-            analyzed_join.columns_added_by_join.emplace_back(NameAndTypePair(column_name, std::move(type)), original_name);
+            analyzed_join.available_joined_columns.emplace_back(NameAndTypePair(column_name, std::move(type)), original_name);
         }
     }
 }
