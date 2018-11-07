@@ -500,7 +500,8 @@ void optimizeUsing(const ASTSelectQuery * select_query)
         expression_list = uniq_expressions_list;
 }
 
-void getArrayJoinedColumns(SyntaxAnalyzerResult & result, const ASTSelectQuery * select_query, const NameSet & source_columns)
+void getArrayJoinedColumns(SyntaxAnalyzerResult & result, const ASTSelectQuery * select_query,
+                           const Names & source_columns, const NameSet & source_columns_set)
 {
     if (select_query && select_query->array_join_expression_list())
     {
@@ -538,7 +539,7 @@ void getArrayJoinedColumns(SyntaxAnalyzerResult & result, const ASTSelectQuery *
             String result_name = expr->getAliasOrColumnName();
 
             /// This is an array.
-            if (!typeid_cast<ASTIdentifier *>(expr.get()) || source_columns.count(source_name))
+            if (!typeid_cast<ASTIdentifier *>(expr.get()) || source_columns_set.count(source_name))
             {
                 result.array_join_result_to_source[result_name] = source_name;
             }
@@ -897,7 +898,7 @@ SyntaxAnalyzerResult SyntaxAnalyzer::analyze(const ASTPtr & query,
     optimizeUsing(select_query);
 
     /// array_join_alias_to_name, array_join_result_to_source.
-    getArrayJoinedColumns(result, select_query, source_columns_set);
+    getArrayJoinedColumns(result, select_query, source_columns_list, source_columns_set);
 
     /// Push the predicate expression down to the subqueries.
     result.rewrite_subqueries = PredicateExpressionsOptimizer(select_query, settings, context).optimize();
