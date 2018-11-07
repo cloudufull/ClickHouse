@@ -858,7 +858,7 @@ SyntaxAnalyzerResult SyntaxAnalyzer::analyze(const ASTPtr & query,
     /// Creates a dictionary `aliases`: alias -> ASTPtr
     {
         LogAST log;
-        QueryAliasesVisitor query_aliases_visitor(aliases, log.stream());
+        QueryAliasesVisitor query_aliases_visitor(result.aliases, log.stream());
         query_aliases_visitor.visit(query);
     }
 
