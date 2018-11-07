@@ -61,10 +61,16 @@ void translateQualifiedNames(ASTPtr & query, ASTSelectQuery * select_query,
     visitor.visit(query);
 }
 
-void normalizeTree(SyntaxAnalyzerResult & result, const Names & source_columns, const NameSet & source_columns_set,
-                   const Context & context, const ASTSelectQuery * select_query, bool asterisk_left_columns_only)
+void normalizeTree(
+    SyntaxAnalyzerResult & result,
+    const Names & source_columns,
+    const NameSet & source_columns_set,
+    const StoragePtr & storage,
+    const Context & context,
+    const ASTSelectQuery * select_query,
+    bool asterisk_left_columns_only)
 {
-    Names all_columns_name(source_columns.begin(), source_columns.end());
+    Names all_columns_name = storage ? storage->getColumns().ordinary.getNames() : source_columns;
 
     if (!asterisk_left_columns_only)
     {
@@ -863,7 +869,8 @@ SyntaxAnalyzerResult SyntaxAnalyzer::analyze(const ASTPtr & query,
     }
 
     /// Common subexpression elimination. Rewrite rules.
-    normalizeTree(result, source_columns_list, source_columns_set, context, select_query, settings.asterisk_left_columns_only != 0);
+    normalizeTree(result, source_columns_list, source_columns_set, storage,
+                  context, select_query, settings.asterisk_left_columns_only != 0);
 
     /// Remove unneeded columns according to 'required_result_columns'.
     /// Leave all selected columns in case of DISTINCT; columns that contain arrayJoin function inside.
