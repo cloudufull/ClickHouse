@@ -134,7 +134,6 @@ ExpressionAnalyzer::ExpressionAnalyzer(
     query = syntax_analyzer_result.query;
     storage = syntax_analyzer_result.storage;
     source_columns = syntax_analyzer_result.source_columns;
-    aliases = syntax_analyzer_result.aliases;
     array_join_result_to_source = syntax_analyzer_result.array_join_result_to_source;
     array_join_alias_to_name = syntax_analyzer_result.array_join_alias_to_name;
     array_join_name_to_alias = syntax_analyzer_result.array_join_name_to_alias;

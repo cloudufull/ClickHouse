@@ -56,9 +56,6 @@ struct ExpressionAnalyzerData
 
     bool has_global_subqueries = false;
 
-    using Aliases = std::unordered_map<String, ASTPtr>;
-    Aliases aliases;
-
     /// Which column is needed to be ARRAY-JOIN'ed to get the specified.
     /// For example, for `SELECT s.v ... ARRAY JOIN a AS s` will get "s.v" -> "a.v".
     NameToNameMap array_join_result_to_source;
